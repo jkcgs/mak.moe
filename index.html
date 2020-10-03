@@ -114,13 +114,11 @@
     function update() {
         let val = select.value;
         if (!x.hasOwnProperty(val)) return;
-
-        x[val].forEach(i => {
+        for (let i = 0; i < l.length; i++) {
             let poster = d[b](`.anime-poster[data-idx='${i}']`);
-            if (!poster) return;
-
-            poster[b]('.checked').style.display = 'block';
-        });
+            let is = x[val].indexOf(i) != -1;
+            poster[b]('.checked').style.display = is ? 'block' : 'none';
+        }
     }
     select.addEventListener('change', update);
 })(document, 'querySelector');
