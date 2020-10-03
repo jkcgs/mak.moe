@@ -1,0 +1,56 @@
+body {
+    font-family: sans-serif;
+    background: black;
+    color: white;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+.header {
+    width: 100%;
+    background-color: black;
+    padding: 5px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+.header .flex {
+    align-items: center;
+    padding: 0 20px
+}
+.posters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 42px;
+}
+.anime-poster {
+    width: 190px;
+    padding: 5px;
+    position: relative;
+}
+.anime-poster img {
+    width: 100%;
+    vertical-align: top;
+}
+.anime-poster .title  {
+    color: yellow;
+}
+.anime-poster .checked {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: block;
+    text-align: center;
+    padding: 5px 7px;
+    color: red;
+    font-weight: bold;
+    font-size: 26px;
+    background-color: rgba(0, 0, 0, .7);
+}

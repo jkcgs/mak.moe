@@ -4,65 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sondeo Animé 2010-2019</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background: black;
-            color: white;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-        }
-        .posters {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .anime-poster {
-            width: 190px;
-            padding: 5px;
-            position: relative;
-        }
-        .anime-poster img {
-            width: 100%;
-            vertical-align: top;
-        }
-        .anime-poster .checked {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: red;
-            font-weight: bold;
-            font-size: 26px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="wrapper">
-    <div class="container">
-        <div class="header">
-            Anime bingo 2010-2019<br>
-            <select><option value="">Elige</option></select>
+    <div class="header">
+        <div class="container flex">
+            <span style="font-weight: bold">Anime bingo 2010-2019</span>
+            <span>User: <select><option value="">Elige</option></select></span>
         </div>
+    </div>
+    <div class="container">
         <div class="posters"></div>
     </div>
 </div>
 <template>
     <div class="anime-poster">
         <img src=""><br />
-        <span class="title"></span>
-        <span class="year"></span>
+        <div class="flex">
+            <span class="title"></span>
+            <span class="year"></span>
+        </div>
         <span class="studio"></span>
-        <span class="checked" style="display: none;">X</span>
+        <span class="checked" style="display: none;">✓</span>
     </div>
 </template>
 <script>
-((d) => {
+((d, b) => {
     const l = [
         ['Angel Beats', 2010, 'P.A. Works', 'angel-beats.jpg'],
         ['Bakuman.', 2010, 'J.C. Staff', 'bakuman.jpg'],
@@ -120,24 +88,22 @@
         'zipi': [7, 9, 16, 18, 19, 26, 28, 29, 31, 39, 40],
     };
 
-    if (!('content' in document.createElement('template'))) return;
+    if (!('content' in d.createElement('template'))) return;
 
-    const cont = d.querySelector('.posters');
+    const cont = d[b]('.posters');
     l.forEach((i, n) => {
-        let t = document.querySelector('template');
-        let c = t.content.querySelector('.anime-poster img');
-        let div = t.content.querySelectorAll('.anime-poster span');
-        div[0].textContent = i[0];
-        div[1].textContent = i[1];
-        div[2].textContent = i[2];
-        c.src = `posters/${i[3]}`;
+        let t = d[b]('template');
+        t.content[b]('.title').textContent = i[0];
+        t.content[b]('.year').textContent = i[1];
+        t.content[b]('.studio').textContent = i[2];
+        t.content[b]('.anime-poster img').src = `posters/${i[3]}`;
 
-        let p = t.content.querySelector('.anime-poster').dataset.idx = n;
+        let p = t.content[b]('.anime-poster').dataset.idx = n;
         let clone = d.importNode(t.content, true);
         cont.appendChild(clone);
     });
 
-    const select = d.querySelector('select');
+    const select = d[b]('select');
     for (var [k, v] of Object.entries(x)) {
         let opt = d.createElement('option');
         opt.value = k;
@@ -150,14 +116,14 @@
         if (!x.hasOwnProperty(val)) return;
 
         x[val].forEach(i => {
-            let poster = d.querySelector(`.anime-poster[data-idx='${i}']`);
+            let poster = d[b](`.anime-poster[data-idx='${i}']`);
             if (!poster) return;
 
-            poster.querySelector('.checked').style.display = 'block';
+            poster[b]('.checked').style.display = 'block';
         });
     }
     select.addEventListener('change', update);
-})(document);
+})(document, 'querySelector');
 </script>
 </body>
 </html>
