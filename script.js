@@ -1,4 +1,5 @@
 ((d, b) => {
+    // Nombre, Año, Estudio, Imagen
     const l = [
         ['Angel Beats', 2010, 'P.A. Works', 'angel-beats.jpg'],
         ['Bakuman.', 2010, 'J.C. Staff', 'bakuman.jpg'],
@@ -43,6 +44,9 @@
         ['The Promised Neverland', 2019, 'CleverWorks', 'neverland.jpg'],
         ['Vinland Saga', 2019, 'Wit Studio', 'vinland-saga.jpg']
     ];
+
+    // key: user, value: índices de anime vistos según array anterior
+    // Si el índice es decimal, significa que la serie no ha sido vista por completo
     const x = {
         'cacha': [10, 11, 16, 26, 31],
         'chang': [0, 2, 6, 7, 10, 12, 14, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 32, 34, 36, 38, 39, 40, 41],
@@ -59,38 +63,48 @@
         'zipi': [7, 9, 16, 18, 19, 26, 28, 29, 31, 39, 40],
     };
 
+    // Si no hay soporte para Templates, cancelar
     if (!('content' in d.createElement('template'))) return;
 
+    // Generar listado de anime
     const cont = d[b]('.posters');
     l.forEach((i, n) => {
+        // Completar datos del anime
         let t = d[b]('template');
         t.content[b]('.title').textContent = i[0];
         t.content[b]('.year').textContent = i[1];
         t.content[b]('.studio').textContent = i[2];
         t.content[b]('.anime-poster img').src = `posters/${i[3]}`;
+        t.content[b]('.anime-poster').dataset.idx = n; // Agregar índice al dataset
 
-        let p = t.content[b]('.anime-poster').dataset.idx = n;
+        // Agregar al contenedor
         let clone = d.importNode(t.content, true);
         cont.appendChild(clone);
     });
 
+    // Rellenar select de usuarios
     const select = d[b]('select');
     for (let k in x) {
         let opt = d.createElement('option');
-        opt.text = k;
+        opt.value = k;
+        opt.textContent = `${k} (${x[k].length})`;
         select.add(opt);
     }
 
+    // Actualizar anime visto al cambiar el select
     function update() {
+        // Usuario seleccionado
         let val = select.value;
+        // Mapear listado de anime vistos por el usuario como enteros truncados
         let f = x[val].map(n => Math.floor(n));
 
+        // Recorrer los anime
         for (let i = 0; i < l.length; i++) {
             let poster = d[b](`.anime-poster[data-idx='${i}']`);
-            let idx = Math.floor(i);
-            let is = f && f.indexOf(idx) != -1;
-            let full = is && x[val].indexOf(idx) != -1;
-            poster[b]('.checked').style.display = is ? 'block' : 'none';
+            
+            let seen = f && f.indexOf(i) != -1; // El usuario ha visto la serie
+            let full = seen && x[val].indexOf(i) != -1; // El usuario ha visto la serie completa
+            poster[b]('.checked').style.display = seen ? 'block' : 'none';
             poster[b]('.checked').textContent = full ? '✓' : '~';
         }
     }
